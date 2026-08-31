@@ -4,12 +4,15 @@ pre-commit:
     frontend-lint:
       glob: '*.{ts,tsx,vue,js,mjs,cjs}'
       run: pnpm exec eslint {staged_files}
+    secret-scan:
+      run: gitleaks protect --staged --verbose
     rust-fmt:
       glob: '*.rs'
       run: cargo fmt --all -- --check
     frontend-format:
       glob: '*.{ts,tsx,vue,js,mjs,cjs}'
       run: pnpm exec eslint {staged_files} --fix
+      stage_fixed: true
 
 pre-push:
   parallel: true
