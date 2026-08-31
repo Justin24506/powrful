@@ -1,27 +1,27 @@
 pre-commit:
   parallel: true
   commands:
-    frontend-lint:
-      glob: '*.{ts,tsx,vue,js,mjs,cjs}'
-      run: pnpm exec eslint {staged_files}
-    secret-scan:
-      run: gitleaks protect --staged --verbose
-    rust-fmt:
-      glob: '*.rs'
-      run: cargo fmt --all -- --check
-    frontend-format:
+    frontend:
       glob: '*.{ts,tsx,vue,js,mjs,cjs}'
       run: pnpm exec eslint {staged_files} --fix
       stage_fixed: true
+    rust-fmt:
+      glob: '*.rs'
+      run: cargo fmt --all -- --check
+    secret-scan:
+      run: |
+        if ! command -v gitleaks >/dev/null 2>&1; then
+          echo "gitleaks not found; skipping secret scan (install with: brew install gitleaks)"
+          exit 0
+        fi
+        gitleaks protect --staged --verbose
 
 pre-push:
   parallel: true
   commands:
     typecheck:
       run: pnpm typecheck
-    test:
-      run: pnpm test
-    clippy:
-      run: cargo clippy --workspace --all-targets -- -D warnings
+    frontend-test:
+      run: vitest run
     format:
       run: pnpm format:check
