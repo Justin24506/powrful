@@ -40,5 +40,6 @@ format-check:
 	pnpm format:check
 
 clean:
-	pnpm dlx tsc --build --clean
+	rm -rf dist
+	rm -rf coverage
 	cargo clean
