@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - 'v*'
+  workflow_dispatch:
 
 jobs:
   build-macos:
@@ -13,10 +14,10 @@ jobs:
           - target: universal-apple-darwin
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 21
           cache: pnpm
@@ -25,11 +26,12 @@ jobs:
         run: pnpm install
 
       - name: install Rust
-        uses: dtolnay/rust-toolchain@stable
+        uses: dtolnay/rust-toolchain@v1
         with:
+          toolchain: stable
           targets: x86_64-apple-darwin,aarch64-apple-darwin
 
-      - uses: tauri-apps/tauri-action@v0
+      - uses: tauri-apps/tauri-action@v1
         env:
           # https://github.com/tauri-apps/tauri-action/issues/740
           CI: false
