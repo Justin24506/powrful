@@ -9,11 +9,13 @@
     "build": "vite optimize && vue-tsc --noEmit && vite build",
     "preview": "vite preview",
     "tauri": "tauri",
-    "test": "vitest run",
+    "test": "vitest run && cargo test --workspace",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
+    "test:rust": "cargo test --workspace",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "lint:rust": "cargo clippy --workspace --all-targets -- -D warnings"
   },
   "dependencies": {
     "@intlify/unplugin-vue-i18n": "^6.0.2",
