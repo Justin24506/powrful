@@ -41,6 +41,40 @@ We welcome contributions! Here's how you can help:
 3. Commit your changes and push them to your branch.
 4. Create a pull request for review.
 
+### Developer tooling
+
+This repo uses [lefthook](https://github.com/evilmartians/lefthook) for git hooks,
+installed automatically via `postinstall`. All checks are exposed both as `pnpm`
+scripts and `make` targets:
+
+| Task                | pnpm                | make              |
+| ------------------- | ------------------- | ----------------- |
+| Install deps        | `pnpm install`      | `make install`    |
+| Dev server          | `pnpm dev`          | `make dev`        |
+| Build               | `pnpm build`        | `make build`      |
+| Test (JS + Rust)    | `pnpm test`         | `make test`       |
+| Rust tests only     | `pnpm test:rust`    | `make test-rust`  |
+| Test watch (JS)     | `pnpm test:watch`   | `make test-watch` |
+| Lint (JS)           | `pnpm lint`         | `make lint`       |
+| Lint (Rust/clippy)  | `pnpm lint:rust`    | `make lint-rust`  |
+| Typecheck           | `pnpm typecheck`    | `make typecheck`  |
+| Format (auto-fix)   | `pnpm format`       | `make format`     |
+| Format check        | `pnpm format:check` | `make format-check` |
+| Clean build output  | –                    | `make clean`      |
+
+The `pre-commit` hook lints/auto-formats staged files and runs a secret scan;
+`pre-push` runs typecheck, the JS test suite, and the format check.
+
+- **Secret scan** uses [gitleaks](https://github.com/gitleaks/gitleaks).
+  Install it with `brew install gitleaks` (or from the gitleaks releases page).
+  If it isn't installed, the scan is **skipped** with a notice rather than
+  blocking your commit.
+- **`AGENTS.md`** is intentionally excluded from version control (it holds local
+  agent/editor instructions that vary per developer and needn't be shared).
+- Rust linting (`clippy`) and the full Rust test suite are runnable on demand via
+  `pnpm lint:rust` and `pnpm test:rust`; they are kept out of the `pre-push` path
+  to keep pushes fast.
+
 ## License
 
 Powerflow is released under the [MIT License](https://github.com/lzt1008/powerflow/blob/main/LICENSE). Feel free to use, modify, and distribute this software as per the license terms.

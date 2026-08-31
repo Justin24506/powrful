@@ -9,10 +9,12 @@ export function defaultColors(count: number = 3) {
 
   const primaryCount = quotient + remainder
   const secondaryCount = quotient
+  const primary = Array.from({ length: primaryCount }, (_, i) => `hsl(var(--vis-primary-color) / ${1 - (1 / primaryCount) * i})`)
+  const secondary = Array.from({ length: secondaryCount }, (_, i) => `hsl(var(--vis-secondary-color) / ${1 - (1 / secondaryCount) * i})`)
   return [
-    ...Array.from(new Array(primaryCount).keys()).map(i => `hsl(var(--vis-primary-color) / ${1 - (1 / primaryCount) * i})`),
-    ...Array.from(new Array(secondaryCount).keys()).map(i => `hsl(var(--vis-secondary-color) / ${1 - (1 / secondaryCount) * i})`),
-  ];
+    ...primary,
+    ...secondary,
+  ]
 }
 
 export * from './interface'

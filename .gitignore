@@ -27,3 +27,6 @@ target
 .auto-imports
 .env
 db.sqlite
+coverage
+
+AGENTS.md

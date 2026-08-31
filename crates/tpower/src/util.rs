@@ -55,3 +55,26 @@ pub fn get_mac_name() -> Option<String> {
 
     Some(String::from_utf8_lossy(&output.stdout).trim().to_string())
 }
+
+#[cfg(test)]
+mod tests {
+    use super::skip_until;
+
+    #[test]
+    fn skip_until_keeps_all_when_shorter_than_width() {
+        let collected: Vec<_> = skip_until([1, 2].iter(), 5).collect();
+        assert_eq!(collected, vec![&1, &2]);
+    }
+
+    #[test]
+    fn skip_until_keeps_trailing_width_elements() {
+        let collected: Vec<_> = skip_until([1, 2, 3, 4, 5, 6].iter(), 2).collect();
+        assert_eq!(collected, vec![&5, &6]);
+    }
+
+    #[test]
+    fn skip_until_equal_length_keeps_everything() {
+        let collected: Vec<_> = skip_until([1, 2, 3].iter(), 3).collect();
+        assert_eq!(collected, vec![&1, &2, &3]);
+    }
+}
