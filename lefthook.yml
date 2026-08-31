@@ -22,6 +22,6 @@ pre-push:
     typecheck:
       run: pnpm typecheck
     frontend-test:
-      run: vitest run
+      run: pnpm exec vitest run
     format:
       run: pnpm format:check
