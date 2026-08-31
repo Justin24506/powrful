@@ -16,7 +16,9 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "lint:rust": "cargo clippy --workspace --all-targets -- -D warnings",
-    "typecheck": "vue-tsc --noEmit"
+    "typecheck": "vue-tsc --noEmit",
+    "format": "cargo fmt --all && eslint . --fix",
+    "format:check": "cargo fmt --all --check && eslint ."
   },
   "dependencies": {
     "@intlify/unplugin-vue-i18n": "^6.0.2",
