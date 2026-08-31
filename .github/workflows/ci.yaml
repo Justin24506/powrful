@@ -31,8 +31,13 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Lint (eslint)
+      - name: Lint & format check (eslint)
         run: pnpm lint
+
+      - name: Ensure auto-import declarations are up to date
+        run: |
+          pnpm exec vite optimize
+          git diff --exit-code -- .auto-imports/
 
       - name: Typecheck (vue-tsc)
         run: pnpm typecheck
