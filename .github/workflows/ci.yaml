@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   frontend:
-    name: Frontend (lint, typecheck, tests)
+    name: Frontend (format, lint, typecheck, tests)
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -28,11 +28,15 @@ jobs:
           node-version: 22
           cache: pnpm
 
+      - uses: dtolnay/rust-toolchain@v1
+        with:
+          toolchain: stable
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Lint & format check (eslint)
-        run: pnpm lint
+      - name: Format & lint check
+        run: pnpm format:check
 
       - name: Ensure auto-import declarations are up to date
         run: |
@@ -46,7 +50,7 @@ jobs:
         run: pnpm exec vitest run
 
   rust:
-    name: Rust (fmt, clippy, tests)
+    name: Rust (clippy, tests)
     runs-on: macos-latest
     timeout-minutes: 20
     steps:
@@ -55,12 +59,9 @@ jobs:
       - uses: dtolnay/rust-toolchain@v1
         with:
           toolchain: stable
-          components: clippy, rustfmt
+          components: clippy
 
       - uses: Swatinem/rust-cache@v2
-
-      - name: Check formatting (rustfmt)
-        run: cargo fmt --all --check
 
       - name: Lint (clippy)
         run: cargo clippy --workspace --all-targets -- -D warnings
